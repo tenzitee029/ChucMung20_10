@@ -1,0 +1,217 @@
+﻿<Window x:Class="ChucMung20_10.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10" 
+        Height="740" Width="430"
+        MinHeight="600" MinWidth="360"
+        WindowStartupLocation="CenterScreen"
+        Background="#FFF0F5">
+
+    <Window.Resources>
+        <!-- Style cho nút bấm hiện đại, bo tròn -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                CornerRadius="22" Padding="20,10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Animation: Chuyển từ màn hình nhập tên sang màn hình thiệp chúc -->
+        <Storyboard x:Key="ShowGreetingAnim">
+            <DoubleAnimation Storyboard.TargetName="InputView" Storyboard.TargetProperty="Opacity"
+                             To="0" Duration="0:0:0.35"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="InputView" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.35" Value="{x:Static Visibility.Collapsed}"/>
+            </ObjectAnimationUsingKeyFrames>
+
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GreetingView" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation Storyboard.TargetName="GreetingView" Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.6" BeginTime="0:0:0.25"/>
+            <DoubleAnimation Storyboard.TargetName="GreetingScale" Storyboard.TargetProperty="ScaleX"
+                             From="0.85" To="1" Duration="0:0:0.6" BeginTime="0:0:0.25">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="GreetingScale" Storyboard.TargetProperty="ScaleY"
+                             From="0.85" To="1" Duration="0:0:0.6" BeginTime="0:0:0.25">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <!-- Animation: Quay lại màn hình nhập tên -->
+        <Storyboard x:Key="BackToInputAnim">
+            <DoubleAnimation Storyboard.TargetName="GreetingView" Storyboard.TargetProperty="Opacity"
+                             To="0" Duration="0:0:0.3"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GreetingView" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Collapsed}"/>
+            </ObjectAnimationUsingKeyFrames>
+
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="InputView" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation Storyboard.TargetName="InputView" Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.4" BeginTime="0:0:0.2"/>
+        </Storyboard>
+    </Window.Resources>
+
+    <!-- Khung chính đáp ứng cả tỷ lệ Mobile & Desktop -->
+    <Grid Margin="16">
+        <Border CornerRadius="28" Background="White">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" ShadowDepth="6" Opacity="0.18" Color="#D81B60"/>
+            </Border.Effect>
+
+            <Grid ClipToBounds="True">
+
+                <!-- ==================== MÀN HÌNH 1: NHẬP HỌ VÀ TÊN ==================== -->
+                <Grid x:Name="InputView" Visibility="Visible">
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#FFF5F8" Offset="0"/>
+                            <GradientStop Color="#FCE4EC" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+
+                    <!-- Họa tiết trang trí góc -->
+                    <Ellipse Width="200" Height="200" Fill="#F8BBD0" Opacity="0.4" 
+                             HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-60,-60,0"/>
+                    <Ellipse Width="150" Height="150" Fill="#F48FB1" Opacity="0.3" 
+                             HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-50,0,0,-50"/>
+
+                    <StackPanel VerticalAlignment="Center" Margin="28">
+                        <TextBlock Text="🌸 20 / 10 🌸" FontSize="34" FontWeight="Bold" 
+                                   Foreground="#D81B60" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <TextBlock Text="Tôn vinh Phụ nữ Việt Nam" FontSize="16" FontWeight="Medium"
+                                   Foreground="#880E4F" HorizontalAlignment="Center" Margin="0,0,0,35"/>
+
+                        <TextBlock Text="Nhập Họ và Tên người nhận:" FontSize="14" FontWeight="SemiBold"
+                                   Foreground="#AD1457" Margin="6,0,0,8"/>
+
+                        <!-- Ô nhập tên -->
+                        <Border Background="White" CornerRadius="16" BorderBrush="#F48FB1" BorderThickness="1.5" Padding="14,10">
+                            <TextBox x:Name="txtFullName" FontSize="17" BorderThickness="0" 
+                                     Background="Transparent" Foreground="#333333"
+                                     VerticalContentAlignment="Center" KeyDown="TxtFullName_KeyDown"/>
+                        </Border>
+
+                        <!-- Thông báo lỗi nếu để trống -->
+                        <TextBlock x:Name="txtError" Text="Vui lòng nhập họ và tên!" Foreground="#E53935" 
+                                   FontSize="13" Margin="6,8,0,0" Visibility="Hidden"/>
+
+                        <!-- Cụm nút Xác nhận & Hủy bỏ -->
+                        <Grid Margin="0,25,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" Content="Xác nhận" Style="{StaticResource ModernButton}" 
+                                    Background="#E91E63" Height="46" Click="BtnConfirm_Click"/>
+
+                            <Button Grid.Column="2" Content="Hủy bỏ" Style="{StaticResource ModernButton}" 
+                                    Background="#9E9E9E" Height="46" Click="BtnCancel_Click"/>
+                        </Grid>
+
+                        <TextBlock Text="Nhập đầy đủ họ và tên, viết hoa chữ cái đầu. VD: Nguyễn Thị A" 
+                                   FontSize="12" Foreground="#999999" HorizontalAlignment="Center" 
+                                   Margin="0,28,0,0" FontStyle="Italic"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- ==================== MÀN HÌNH 2: THIỆP CHÚC & HÌNH NỀN ==================== -->
+                <Grid x:Name="GreetingView" Visibility="Collapsed" Opacity="0" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <ScaleTransform x:Name="GreetingScale" ScaleX="1" ScaleY="1"/>
+                    </Grid.RenderTransform>
+
+                    <!-- Hình nền là ảnh của người được nhập tên -->
+                    <Border CornerRadius="28">
+                        <Border.Background>
+                            <ImageBrush x:Name="bgPersonImage" Stretch="UniformToFill"/>
+                        </Border.Background>
+                    </Border>
+
+                    <!-- Lớp phủ Gradient tối ở phía dưới để chữ nổi bật rõ ràng trên mọi bức ảnh -->
+                    <Border CornerRadius="28">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                <GradientStop Color="#15000000" Offset="0"/>
+                                <GradientStop Color="#66000000" Offset="0.45"/>
+                                <GradientStop Color="#E638001A" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <!-- Hiệu ứng cánh hoa rơi bay bổng -->
+                    <Canvas x:Name="ParticleCanvas" IsHitTestVisible="False" ClipToBounds="True"/>
+
+                    <!-- Nội dung lời chúc -->
+                    <Grid Margin="24">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Nút Quay lại -->
+                        <Button Grid.Row="0" Content="← Nhập tên khác" HorizontalAlignment="Left"
+                                Style="{StaticResource ModernButton}" Background="#66000000" 
+                                FontSize="13" Height="36" Click="BtnBack_Click"/>
+
+                        <!-- Khung lời chúc ở dưới -->
+                        <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Margin="0,0,0,20">
+                            <Border Background="#CCFF4081" CornerRadius="12" Padding="12,5" 
+                                    HorizontalAlignment="Left" Margin="0,0,0,12">
+                                <TextBlock Text="HAPPY VIETNAMESE WOMEN'S DAY 20/10" Foreground="White" 
+                                           FontSize="11" FontWeight="Bold"/>
+                            </Border>
+
+                            <!-- Tên người nhận -->
+                            <TextBlock x:Name="txtRecipientName" Text="Gửi Người Phụ Nữ Tuyệt Vời" 
+                                       FontSize="28" FontWeight="Bold" Foreground="White" 
+                                       TextWrapping="Wrap" Margin="0,0,0,14">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.6"/>
+                                </TextBlock.Effect>
+                            </TextBlock>
+
+                            <!-- Thẻ chứa câu chúc (Glassmorphism style) -->
+                            <Border Background="#38FFFFFF" BorderBrush="#66FFFFFF" BorderThickness="1" 
+                                    CornerRadius="18" Padding="18">
+                                <TextBlock x:Name="txtWishMessage" 
+                                           Text="Lời chúc sẽ hiển thị tại đây..." 
+                                           FontSize="15.5" Foreground="White" 
+                                           TextWrapping="Wrap" LineHeight="24" FontWeight="Medium"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
